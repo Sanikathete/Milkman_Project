@@ -9,10 +9,12 @@ function HomePage() {
   const [products, setProducts] = useState([])
   const [activeCategory, setActiveCategory] = useState('all')
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
+      setError('')
       try {
         const [categoriesResponse, productsResponse] = await Promise.all([
           catalogApi.getCategories(),
@@ -20,6 +22,8 @@ function HomePage() {
         ])
         setCategories(categoriesResponse.data)
         setProducts(productsResponse.data)
+      } catch (err) {
+        setError('Unable to load products right now. Please try again.')
       } finally {
         setLoading(false)
       }
@@ -60,6 +64,7 @@ function HomePage() {
 
       <section>
         <h2 className="mb-4 text-2xl font-bold text-slate-900">Products</h2>
+        {error && <p className="mb-3 text-sm text-brandRed">{error}</p>}
         {loading ? (
           <p className="text-slate-500">Loading products...</p>
         ) : (

@@ -1,6 +1,10 @@
 ﻿export function getApiErrorMessage(error, fallback = 'Something went wrong.') {
   const data = error?.response?.data
 
+  if (!error?.response && error?.request) {
+    return 'Unable to reach the server. Make sure the backend is running on 127.0.0.1:8000.'
+  }
+
   if (!data) {
     return fallback
   }

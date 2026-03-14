@@ -57,3 +57,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'Profile<{self.user.email}>'
+
+
+class StaffProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='staff_profile')
+    position = models.CharField(max_length=120, blank=True)
+    salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    joining_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f'StaffProfile<{self.user.email}>'

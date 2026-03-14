@@ -15,11 +15,21 @@ function SubscriptionFormPage() {
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [loadingProduct, setLoadingProduct] = useState(true)
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await catalogApi.getProduct(productId)
-      setProduct(response.data)
+      setLoadingProduct(true)
+      setError('')
+      try {
+        const response = await catalogApi.getProduct(productId)
+        setProduct(response.data)
+      } catch (err) {
+        setError(getApiErrorMessage(err, 'Unable to load product details.'))
+        setProduct(null)
+      } finally {
+        setLoadingProduct(false)
+      }
     }
     fetchProduct()
   }, [productId])
@@ -53,8 +63,12 @@ function SubscriptionFormPage() {
     }
   }
 
-  if (!product) {
+  if (loadingProduct) {
     return <p>Loading subscription form...</p>
+  }
+
+  if (!product) {
+    return <p className="text-brandRed">{error || 'Unable to load subscription form.'}</p>
   }
 
   return (

@@ -1,23 +1,22 @@
-﻿from datetime import timedelta
+from datetime import timedelta
+from unittest.mock import Mock, patch
 
+import stripe
+from django.test import override_settings
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from accounts.models import CustomUser
 from catalog.models import Category, Product
+from orders.models import Order
 from subscriptions.models import Subscription
 
 
-class PaymentAPITests(APITestCase):
+class StripePaymentTests(APITestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
             email='payuser@rajandairy.com',
-            password='StrongPass@123',
-            role=CustomUser.Role.CUSTOMER,
-        )
-        self.other_user = CustomUser.objects.create_user(
-            email='payother@rajandairy.com',
             password='StrongPass@123',
             role=CustomUser.Role.CUSTOMER,
         )
@@ -37,6 +36,15 @@ class PaymentAPITests(APITestCase):
             is_available=True,
         )
 
+        self.order = Order.objects.create(
+            user=self.user,
+            product=self.product,
+            quantity=2,
+            total_price=90,
+            payment_status=Order.PaymentStatus.PENDING,
+            is_active=False,
+        )
+
         self.subscription = Subscription.objects.create(
             user=self.user,
             product=self.product,
@@ -45,59 +53,62 @@ class PaymentAPITests(APITestCase):
             payment_status=Subscription.PaymentStatus.PENDING,
             is_active=False,
         )
-        self.url = '/api/payment/'
 
-    def test_owner_can_pay_and_activate_subscription(self):
+    @override_settings(
+        STRIPE_SECRET_KEY='sk_test',
+        STRIPE_CURRENCY='inr',
+        STRIPE_SUCCESS_URL='http://example.com/success',
+        STRIPE_CANCEL_URL='http://example.com/cancel',
+    )
+    @patch('payments.views.stripe.checkout.Session.create')
+    def test_checkout_creates_session_for_order(self, mock_create):
+        mock_create.return_value = Mock(id='sess_123', url='http://checkout')
         self.client.force_authenticate(user=self.user)
-        response = self.client.post(
-            self.url,
-            {
-                'subscription_id': self.subscription.id,
-                'payment_method': 'Card',
-                'details': {
-                    'card_holder': 'Test User',
-                    'card_last4': '4242',
-                    'expiry': '12/30',
-                },
+
+        response = self.client.post('/api/payment/', {'order_id': self.order.id}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['checkout_url'], 'http://checkout')
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.payment_reference, 'sess_123')
+        self.assertEqual(self.order.payment_method, Order.PaymentMethod.CARD)
+
+    @override_settings(STRIPE_WEBHOOK_SECRET='whsec_test')
+    @patch('payments.views.stripe.Webhook.construct_event')
+    def test_webhook_marks_order_paid(self, mock_construct_event):
+        mock_construct_event.return_value = {
+            'type': 'checkout.session.completed',
+            'data': {
+                'object': {
+                    'metadata': {'type': 'order', 'order_id': str(self.order.id)},
+                    'payment_intent': 'pi_123',
+                    'id': 'sess_123',
+                }
             },
-            format='json',
+        }
+
+        response = self.client.post(
+            '/api/payment/webhook/',
+            data='{}',
+            content_type='application/json',
+            HTTP_STRIPE_SIGNATURE='sig',
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.subscription.refresh_from_db()
-        self.assertEqual(self.subscription.payment_status, Subscription.PaymentStatus.PAID)
-        self.assertTrue(self.subscription.is_active)
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.payment_status, Order.PaymentStatus.PAID)
+        self.assertEqual(self.order.payment_reference, 'pi_123')
 
-    def test_other_customer_cannot_pay_subscription(self):
-        self.client.force_authenticate(user=self.other_user)
+    @override_settings(STRIPE_WEBHOOK_SECRET='whsec_test')
+    @patch('payments.views.stripe.Webhook.construct_event')
+    def test_webhook_invalid_signature(self, mock_construct_event):
+        mock_construct_event.side_effect = stripe.error.SignatureVerificationError('bad', 'sig')
+
         response = self.client.post(
-            self.url,
-            {
-                'subscription_id': self.subscription.id,
-                'payment_method': 'UPI',
-                'details': {
-                    'upi_id': 'test@upi',
-                    'txn_ref': 'TXN-1234',
-                },
-            },
-            format='json',
+            '/api/payment/webhook/',
+            data='{}',
+            content_type='application/json',
+            HTTP_STRIPE_SIGNATURE='sig',
         )
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-    def test_admin_can_pay_any_subscription(self):
-        self.client.force_authenticate(user=self.admin)
-        response = self.client.post(
-            self.url,
-            {
-                'subscription_id': self.subscription.id,
-                'payment_method': 'NetBanking',
-                'details': {
-                    'bank_name': 'SBI',
-                    'txn_ref': 'NB-7788',
-                },
-            },
-            format='json',
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

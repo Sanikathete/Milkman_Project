@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import { getApiErrorMessage } from '../utils/error'
 
 function RegisterPage() {
-  const { register, loading } = useAuth()
+  const { login, register, loading } = useAuth()
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -27,9 +27,12 @@ function RegisterPage() {
     setError('')
 
     try {
+      const email = form.email.trim().toLowerCase()
+      const password = form.password
+
       await register({
-        email: form.email,
-        password: form.password,
+        email,
+        password,
         profile: {
           phone: form.phone,
           address: form.address,
@@ -37,7 +40,8 @@ function RegisterPage() {
           pincode: form.pincode,
         },
       })
-      navigate('/login', { state: { redirectTo: '/' } })
+      const user = await login({ email, password })
+      navigate(user.role === 'ADMIN' ? '/admin' : '/dashboard')
     } catch (err) {
       setError(getApiErrorMessage(err, 'Registration failed.'))
     }

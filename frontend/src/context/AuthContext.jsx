@@ -1,17 +1,14 @@
 ﻿import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import { authApi } from '../api/endpoints'
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, USER_KEY } from './authStorage'
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, USER_KEY, readStoredJson } from './authStorage'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(localStorage.getItem(ACCESS_TOKEN_KEY) || '')
   const [refreshToken, setRefreshToken] = useState(localStorage.getItem(REFRESH_TOKEN_KEY) || '')
-  const [user, setUser] = useState(() => {
-    const raw = localStorage.getItem(USER_KEY)
-    return raw ? JSON.parse(raw) : null
-  })
+  const [user, setUser] = useState(() => readStoredJson(USER_KEY, null))
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {

@@ -6,12 +6,13 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { getProductImageCandidates } from '../utils/productImage'
 
-const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL || 'http://127.0.0.1:8000'
+const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL ?? 'http://127.0.0.1:8000'
 
 function ProductDetailsPage() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [imageIndex, setImageIndex] = useState(0)
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
@@ -19,9 +20,14 @@ function ProductDetailsPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setError('')
+      setLoading(true)
       try {
         const response = await catalogApi.getProduct(id)
         setProduct(response.data)
+      } catch (err) {
+        setError('Unable to load product details right now.')
+        setProduct(null)
       } finally {
         setLoading(false)
       }
@@ -58,6 +64,7 @@ function ProductDetailsPage() {
   }
 
   if (loading) return <p>Loading product...</p>
+  if (error) return <p className="text-brandRed">{error}</p>
   if (!product) return <p>Product not found.</p>
 
   return (

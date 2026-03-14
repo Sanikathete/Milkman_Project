@@ -5,6 +5,8 @@ import AdminLayout from './layouts/AdminLayout'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import ProductDetailsPage from './pages/ProductDetailsPage'
 import SubscriptionFormPage from './pages/SubscriptionFormPage'
 import BuyCheckoutPage from './pages/BuyCheckoutPage'
@@ -25,6 +27,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/products/:id" element={<ProductDetailsPage />} />
 
         <Route path="/cart" element={<CartPage />} />
