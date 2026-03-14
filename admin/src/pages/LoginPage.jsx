@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL, API_BASE_URL_LOOKS_LOCAL } from '../services/api'
 
 function LoginPage() {
   const { login, loading, isAuthenticated, logout } = useAuth()
@@ -58,6 +59,14 @@ function LoginPage() {
         <section className="content" style={{ maxWidth: '520px', margin: '0 auto' }}>
           <h1 style={{ marginTop: 0 }}>Admin Login</h1>
           <p className="notice">Use your admin credentials to continue.</p>
+
+          {import.meta.env.PROD && API_BASE_URL_LOOKS_LOCAL && (
+            <p className="error" style={{ marginTop: '12px' }}>
+              Deployment config issue: API URL is set to <code>{API_BASE_URL}</code>. Set <code>VITE_API_BASE_URL</code>{' '}
+              and reload.
+            </p>
+          )}
+
           <form className="form" onSubmit={onSubmit}>
             <input
               className="input"

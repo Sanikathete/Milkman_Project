@@ -158,3 +158,17 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = env_bool('SECURE_SSL_REDIRECT', not DEBUG) and not TESTING
 SESSION_COOKIE_SECURE = env_bool('SESSION_COOKIE_SECURE', not DEBUG) and not TESTING
 CSRF_COOKIE_SECURE = env_bool('CSRF_COOKIE_SECURE', not DEBUG) and not TESTING
+
+# Fail fast in production so we don't get "login doesn't work" mystery bugs that are
+# actually misconfigured env vars (CORS/hosts/base URLs).
+if not DEBUG and not TESTING:
+    if not os.getenv('ALLOWED_HOSTS'):
+        raise ValueError('ALLOWED_HOSTS must be set when DEBUG is False (e.g. your Azure domain).')
+
+    if not os.getenv('FRONTEND_URL'):
+        raise ValueError('FRONTEND_URL must be set when DEBUG is False (used for password reset links).')
+
+    if not CORS_ALLOW_ALL_ORIGINS and not CORS_ALLOWED_ORIGINS:
+        raise ValueError(
+            'CORS_ALLOWED_ORIGINS must be set when DEBUG is False (or set CORS_ALLOW_ALL_ORIGINS=True).'
+        )

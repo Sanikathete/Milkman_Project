@@ -2,7 +2,20 @@
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, clearAuthStorage } from '../context/authStorage'
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000/api'
+// Prefer VITE_API_BASE_URL, but accept VITE_API_URL as a fallback to reduce deployment misconfig.
+const apiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000/api'
+
+export const API_BASE_URL = apiBaseUrl
+export const API_BASE_URL_LOOKS_LOCAL = /(^|\/\/)(localhost|127\.0\.0\.1)(:|\/|$)/i.test(apiBaseUrl)
+
+if (import.meta.env.PROD && API_BASE_URL_LOOKS_LOCAL) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    `[milkman-frontend] API base URL looks like localhost (${apiBaseUrl}). ` +
+      'Set VITE_API_BASE_URL (recommended) or VITE_API_URL in the deployed customer app.',
+  )
+}
 
 const apiClient = axios.create({
   baseURL: apiBaseUrl,

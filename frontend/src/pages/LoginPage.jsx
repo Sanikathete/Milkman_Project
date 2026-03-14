@@ -1,6 +1,7 @@
 ﻿import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
+import { API_BASE_URL, API_BASE_URL_LOOKS_LOCAL } from '../api/client'
 import { useAuth } from '../context/AuthContext'
 import { getApiErrorMessage } from '../utils/error'
 
@@ -11,6 +12,7 @@ function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const adminAppUrl = import.meta.env.VITE_ADMIN_APP_URL ?? 'http://127.0.0.1:5174'
+  const adminUrlLooksLocal = /(^|\/\/)(localhost|127\.0\.0\.1)(:|\/|$)/i.test(adminAppUrl)
 
   const redirectTo = location.state?.redirectTo
   const successMessage = location.state?.message
@@ -46,6 +48,18 @@ function LoginPage() {
   return (
     <div className="mx-auto max-w-md card p-6">
       <h1 className="mb-6 text-2xl font-bold text-brandBlue">Login</h1>
+      {import.meta.env.PROD && API_BASE_URL_LOOKS_LOCAL && (
+        <div className="mb-4 rounded-lg border border-brandRed/20 bg-red-50 p-3 text-sm text-brandRed">
+          Deployment config issue: API URL is set to <span className="font-mono">{API_BASE_URL}</span>. Set{' '}
+          <span className="font-mono">VITE_API_BASE_URL</span> and reload.
+        </div>
+      )}
+      {import.meta.env.PROD && adminUrlLooksLocal && (
+        <div className="mb-4 rounded-lg border border-brandRed/20 bg-red-50 p-3 text-sm text-brandRed">
+          Deployment config issue: Admin URL is set to <span className="font-mono">{adminAppUrl}</span>. Set{' '}
+          <span className="font-mono">VITE_ADMIN_APP_URL</span> and reload.
+        </div>
+      )}
       <div className="mb-4 rounded-lg border border-slate-100 bg-slate-50 p-3 text-sm text-slate-700">
         <p className="font-semibold text-slate-900">Admin?</p>
         <p className="mt-1 text-slate-600">Use the admin dashboard login.</p>

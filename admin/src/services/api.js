@@ -2,7 +2,23 @@ import axios from 'axios'
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, clearAuthStorage } from './authStorage'
 
-const apiBaseUrl = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000/api'
+// Prefer the same env var name used by the customer frontend.
+// Keep VITE_API_URL as a backward-compatible fallback.
+const apiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000/api'
+
+export const API_BASE_URL = apiBaseUrl
+export const API_BASE_URL_LOOKS_LOCAL = /(^|\/\/)(localhost|127\.0\.0\.1)(:|\/|$)/i.test(apiBaseUrl)
+
+if (import.meta.env.PROD && API_BASE_URL_LOOKS_LOCAL) {
+  // This is the #1 reason login "mysteriously" fails after deployment.
+  // Fail loudly in the browser console so it’s obvious what to fix.
+  // eslint-disable-next-line no-console
+  console.warn(
+    `[milkman-admin] API base URL looks like localhost (${apiBaseUrl}). ` +
+      'Set VITE_API_BASE_URL (recommended) or VITE_API_URL in the deployed admin app.',
+  )
+}
 
 const api = axios.create({
   baseURL: apiBaseUrl,

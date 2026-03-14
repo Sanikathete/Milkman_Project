@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../context/AuthContext'
+import { API_BASE_URL, API_BASE_URL_LOOKS_LOCAL } from '../services/api'
 
 function AdminLayout() {
   const { user, logout } = useAuth()
@@ -25,6 +26,13 @@ function AdminLayout() {
           </button>
         </div>
       </header>
+
+      {import.meta.env.PROD && API_BASE_URL_LOOKS_LOCAL && (
+        <div className="env-banner" role="alert">
+          Admin app is using a localhost API URL (<code>{API_BASE_URL}</code>). Login will fail after deployment until you
+          set <code>VITE_API_BASE_URL</code>.
+        </div>
+      )}
 
       <div className="layout">
         <aside className="sidebar">
