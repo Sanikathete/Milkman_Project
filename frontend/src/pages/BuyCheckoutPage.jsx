@@ -11,11 +11,21 @@ function BuyCheckoutPage() {
   const [quantity, setQuantity] = useState(1)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [loadingProduct, setLoadingProduct] = useState(true)
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await catalogApi.getProduct(productId)
-      setProduct(response.data)
+      setLoadingProduct(true)
+      setError('')
+      try {
+        const response = await catalogApi.getProduct(productId)
+        setProduct(response.data)
+      } catch (err) {
+        setError(getApiErrorMessage(err, 'Unable to load product details.'))
+        setProduct(null)
+      } finally {
+        setLoadingProduct(false)
+      }
     }
     fetchProduct()
   }, [productId])
@@ -38,8 +48,12 @@ function BuyCheckoutPage() {
     }
   }
 
-  if (!product) {
+  if (loadingProduct) {
     return <p>Loading checkout...</p>
+  }
+
+  if (!product) {
+    return <p className="text-brandRed">{error || 'Unable to load checkout.'}</p>
   }
 
   const total = Number(product.price) * Number(quantity || 1)

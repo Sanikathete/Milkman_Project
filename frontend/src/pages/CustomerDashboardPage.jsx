@@ -1,5 +1,5 @@
-﻿import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { orderApi, subscriptionApi } from '../api/endpoints'
 
@@ -14,6 +14,12 @@ function CustomerDashboardPage() {
   const [orders, setOrders] = useState([])
   const [orderFilters, setOrderFilters] = useState(defaultFilters)
   const [subscriptionFilters, setSubscriptionFilters] = useState(defaultFilters)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const fetchOrders = async (filters) => {
     const params = Object.fromEntries(Object.entries(filters).filter(([, value]) => value))
@@ -28,9 +34,53 @@ function CustomerDashboardPage() {
   }
 
   useEffect(() => {
-    fetchOrders(orderFilters)
-    fetchSubscriptions(subscriptionFilters)
+    const fetchData = async () => {
+      setLoading(true)
+      setError('')
+      try {
+        await Promise.all([fetchOrders(orderFilters), fetchSubscriptions(subscriptionFilters)])
+      } catch (err) {
+        setError('Unable to load dashboard data. Please try again.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
   }, [])
+
+  useEffect(() => {
+    const payment = searchParams.get('payment')
+    if (!payment) return
+
+    if (payment === 'success') {
+      setNotice('Payment completed successfully.')
+    } else if (payment === 'cancel') {
+      setNotice('Payment was canceled. You can try again anytime.')
+    }
+
+    const params = new URLSearchParams(searchParams)
+    params.delete('payment')
+    navigate({ pathname: location.pathname, search: params.toString() }, { replace: true })
+  }, [searchParams, navigate, location.pathname])
+
+  const applyOrderFilters = async () => {
+    setError('')
+    try {
+      await fetchOrders(orderFilters)
+    } catch (err) {
+      setError('Unable to load orders with those filters.')
+    }
+  }
+
+  const applySubscriptionFilters = async () => {
+    setError('')
+    try {
+      await fetchSubscriptions(subscriptionFilters)
+    } catch (err) {
+      setError('Unable to load subscriptions with those filters.')
+    }
+  }
 
   return (
     <div className="space-y-8">
@@ -38,6 +88,9 @@ function CustomerDashboardPage() {
         <h1 className="text-2xl font-bold text-brandBlue">My Dashboard</h1>
         <Link to="/" className="text-sm font-semibold text-brandBlue">Browse Products</Link>
       </div>
+      {notice && <p className="text-sm text-green-700">{notice}</p>}
+      {error && <p className="text-sm text-brandRed">{error}</p>}
+      {loading && <p className="text-slate-500">Loading dashboard...</p>}
 
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-slate-900">My Orders</h2>
@@ -50,7 +103,7 @@ function CustomerDashboardPage() {
           </select>
           <input type="date" className="rounded-lg border px-3 py-2" value={orderFilters.date_from} onChange={(e) => setOrderFilters((prev) => ({ ...prev, date_from: e.target.value }))} />
           <input type="date" className="rounded-lg border px-3 py-2" value={orderFilters.date_to} onChange={(e) => setOrderFilters((prev) => ({ ...prev, date_to: e.target.value }))} />
-          <button className="rounded-lg bg-brandBlue px-4 py-2 font-semibold text-white" onClick={() => fetchOrders(orderFilters)}>Apply</button>
+          <button className="rounded-lg bg-brandBlue px-4 py-2 font-semibold text-white" onClick={applyOrderFilters}>Apply</button>
         </div>
 
         <div className="grid gap-4">
@@ -92,7 +145,7 @@ function CustomerDashboardPage() {
           </select>
           <input type="date" className="rounded-lg border px-3 py-2" value={subscriptionFilters.date_from} onChange={(e) => setSubscriptionFilters((prev) => ({ ...prev, date_from: e.target.value }))} />
           <input type="date" className="rounded-lg border px-3 py-2" value={subscriptionFilters.date_to} onChange={(e) => setSubscriptionFilters((prev) => ({ ...prev, date_to: e.target.value }))} />
-          <button className="rounded-lg bg-brandBlue px-4 py-2 font-semibold text-white" onClick={() => fetchSubscriptions(subscriptionFilters)}>Apply</button>
+          <button className="rounded-lg bg-brandBlue px-4 py-2 font-semibold text-white" onClick={applySubscriptionFilters}>Apply</button>
         </div>
 
         <div className="grid gap-4">

@@ -1,14 +1,13 @@
 ﻿import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
+import { readStoredJson } from './authStorage'
+
 const CART_KEY = 'milkman_cart'
 
 const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState(() => {
-    const raw = localStorage.getItem(CART_KEY)
-    return raw ? JSON.parse(raw) : []
-  })
+  const [items, setItems] = useState(() => readStoredJson(CART_KEY, []))
   const [popupItem, setPopupItem] = useState(null)
 
   useEffect(() => {

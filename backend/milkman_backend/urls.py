@@ -4,7 +4,17 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from accounts.views import LoginView, RegisterView, UserDetailAPIView, UserListAPIView
+from accounts.views import (
+    LoginView,
+    PasswordResetConfirmView,
+    PasswordResetRequestView,
+    RegisterView,
+    StaffListAPIView,
+    StaffDetailAPIView,
+    UserDetailAPIView,
+    UserListAPIView,
+)
+from analytics.views import AnalyticsAPIView, RevenueAPIView
 from catalog.views import (
     CategoryDetailAPIView,
     CategoryListCreateAPIView,
@@ -12,7 +22,7 @@ from catalog.views import (
     ProductListCreateAPIView,
 )
 from orders.views import OrderAdminListAPIView, OrderDetailAPIView, OrderListCreateAPIView
-from payments.views import DummyPaymentView
+from payments.views import StripeCheckoutView, StripeWebhookView
 from subscriptions.views import (
     SubscriptionAdminListAPIView,
     SubscriptionDetailAPIView,
@@ -23,6 +33,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/register/', RegisterView.as_view(), name='register'),
     path('api/auth/login/', LoginView.as_view(), name='login'),
+    path('api/auth/forgot-password/', PasswordResetRequestView.as_view(), name='forgot-password'),
+    path('api/auth/reset-password/', PasswordResetConfirmView.as_view(), name='reset-password'),
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
 
     path('api/categories/', CategoryListCreateAPIView.as_view(), name='category-list-create'),
@@ -41,8 +53,14 @@ urlpatterns = [
 
     path('api/users/', UserListAPIView.as_view(), name='user-list'),
     path('api/users/<int:pk>/', UserDetailAPIView.as_view(), name='user-detail'),
+    path('api/staff/', StaffListAPIView.as_view(), name='staff-list'),
+    path('api/staff/<int:pk>/', StaffDetailAPIView.as_view(), name='staff-detail'),
 
-    path('api/payment/', DummyPaymentView.as_view(), name='dummy-payment'),
+    path('api/analytics/', AnalyticsAPIView.as_view(), name='analytics'),
+    path('api/revenue/', RevenueAPIView.as_view(), name='revenue'),
+
+    path('api/payment/', StripeCheckoutView.as_view(), name='stripe-checkout'),
+    path('api/payment/webhook/', StripeWebhookView.as_view(), name='stripe-webhook'),
 ]
 
 if settings.DEBUG:

@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { getProductImageCandidates } from '../utils/productImage'
 
-const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL || 'http://127.0.0.1:8000'
+const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL ?? 'http://127.0.0.1:8000'
 
 function ProductCard({ product }) {
   const { isAuthenticated } = useAuth()
