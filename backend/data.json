@@ -1,0 +1,757 @@
+[
+{
+  "model": "accounts.customuser",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$XLwQsQ1KbfYmTZm8PJmZ3p$sfNLutvuYOz4mtlY/RGePnGMwAY9LO54qTVg9Ndwz+M=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "sanika@gmail.com",
+    "role": "CUSTOMER",
+    "is_active": true,
+    "is_staff": false,
+    "date_joined": "2026-03-03T06:17:15.995Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$rBL6gcJRtnF4xhp6oRlwwf$3n+8x2Elf0qgOQcfV8LMLtQ9EMXLckFPQP/fMBtjIzw=",
+    "last_login": null,
+    "is_superuser": true,
+    "email": "admin",
+    "role": "ADMIN",
+    "is_active": true,
+    "is_staff": true,
+    "date_joined": "2026-03-14T10:45:07.564Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "phone": "08830624340",
+    "address": "Near Balaji big bazar, Sant tukaram Nagar, Pimpri.",
+    "city": "PUNE",
+    "pincode": "411081"
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "phone": "",
+    "address": "",
+    "city": "",
+    "pincode": ""
+  }
+},
+{
+  "model": "accounts.staffprofile",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "position": "",
+    "salary": null,
+    "joining_date": null
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 1,
+  "fields": {
+    "name": "Milk",
+    "description": "Fresh and nutritious daily milk options.",
+    "created_at": "2026-03-02T16:39:27.564Z"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 2,
+  "fields": {
+    "name": "Fresh Dairy",
+    "description": "Freshly prepared dairy essentials.",
+    "created_at": "2026-03-02T16:39:27.648Z"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 3,
+  "fields": {
+    "name": "Sweets & Traditional",
+    "description": "Traditional sweets and festive dairy treats.",
+    "created_at": "2026-03-02T16:39:27.791Z"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 4,
+  "fields": {
+    "name": "Cheese & Value Added",
+    "description": "Cheese and value-added dairy products.",
+    "created_at": "2026-03-02T16:39:27.907Z"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 5,
+  "fields": {
+    "name": "Beverages",
+    "description": "Refreshing beverages and packaged water.",
+    "created_at": "2026-03-02T16:39:28.000Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "name": "Cow Milk",
+    "description": "Pure cow milk",
+    "price": "60.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.586Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 2,
+  "fields": {
+    "category": 1,
+    "name": "Buffalo Milk",
+    "description": "Rich buffalo milk",
+    "price": "70.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.602Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 3,
+  "fields": {
+    "category": 1,
+    "name": "Toned Milk",
+    "description": "Balanced fat toned milk",
+    "price": "55.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.617Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 4,
+  "fields": {
+    "category": 1,
+    "name": "Full Cream Milk",
+    "description": "Creamy full fat milk",
+    "price": "68.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.632Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 5,
+  "fields": {
+    "category": 2,
+    "name": "Curd (Dahi)",
+    "description": "Farm-fresh curd",
+    "price": "45.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.664Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 6,
+  "fields": {
+    "category": 2,
+    "name": "Buttermilk (Chaas)",
+    "description": "Refreshing chaas",
+    "price": "30.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.689Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 7,
+  "fields": {
+    "category": 2,
+    "name": "Lassi (Sweet)",
+    "description": "Sweet lassi",
+    "price": "40.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.706Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 8,
+  "fields": {
+    "category": 2,
+    "name": "Lassi (Salted)",
+    "description": "Salted lassi",
+    "price": "40.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.722Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 9,
+  "fields": {
+    "category": 2,
+    "name": "Paneer",
+    "description": "Soft paneer block",
+    "price": "95.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.742Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 10,
+  "fields": {
+    "category": 2,
+    "name": "Butter",
+    "description": "Creamy table butter",
+    "price": "80.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.759Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 11,
+  "fields": {
+    "category": 2,
+    "name": "Ghee",
+    "description": "Traditional cow ghee",
+    "price": "250.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.776Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 12,
+  "fields": {
+    "category": 3,
+    "name": "Shrikhand",
+    "description": "Classic saffron shrikhand",
+    "price": "90.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.811Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 13,
+  "fields": {
+    "category": 3,
+    "name": "Amrakhand",
+    "description": "Mango flavored amrakhand",
+    "price": "100.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.825Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 14,
+  "fields": {
+    "category": 3,
+    "name": "Pedha",
+    "description": "Milky pedha sweets",
+    "price": "120.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.843Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 15,
+  "fields": {
+    "category": 3,
+    "name": "Gulab Jamun",
+    "description": "Soft gulab jamun",
+    "price": "110.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.861Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 16,
+  "fields": {
+    "category": 3,
+    "name": "Barfi",
+    "description": "Traditional milk barfi",
+    "price": "130.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.877Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 17,
+  "fields": {
+    "category": 3,
+    "name": "Khoa",
+    "description": "Pure khoa base",
+    "price": "140.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.891Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 18,
+  "fields": {
+    "category": 4,
+    "name": "Cheddar Cheese",
+    "description": "Mature cheddar block",
+    "price": "180.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.919Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 19,
+  "fields": {
+    "category": 4,
+    "name": "Processed Cheese",
+    "description": "Processed cheese slices",
+    "price": "160.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.936Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 20,
+  "fields": {
+    "category": 4,
+    "name": "Mozzarella Cheese",
+    "description": "Shredded mozzarella",
+    "price": "190.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.955Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 21,
+  "fields": {
+    "category": 4,
+    "name": "Whey Cheese",
+    "description": "Protein-rich whey cheese",
+    "price": "170.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.969Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 22,
+  "fields": {
+    "category": 4,
+    "name": "Flavoured Milk",
+    "description": "Assorted flavored milk",
+    "price": "35.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:27.990Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 23,
+  "fields": {
+    "category": 5,
+    "name": "Mango Drink",
+    "description": "Mango fruit beverage",
+    "price": "25.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:28.012Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 24,
+  "fields": {
+    "category": 5,
+    "name": "Orange Drink",
+    "description": "Orange fruit beverage",
+    "price": "25.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:28.024Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 25,
+  "fields": {
+    "category": 5,
+    "name": "Lemon Drink",
+    "description": "Lemon refreshment",
+    "price": "20.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:28.045Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 26,
+  "fields": {
+    "category": 5,
+    "name": "Jeera Drink",
+    "description": "Spiced jeera cooler",
+    "price": "20.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:28.059Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 27,
+  "fields": {
+    "category": 5,
+    "name": "Packaged Drinking Water",
+    "description": "Purified drinking water",
+    "price": "15.00",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-03-02T16:39:28.074Z"
+  }
+},
+{
+  "model": "subscriptions.subscription",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 26,
+    "frequency": "Daily",
+    "start_date": "2026-03-03",
+    "end_date": "2026-04-03",
+    "is_active": true,
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "created_at": "2026-03-03T06:24:32.514Z"
+  }
+},
+{
+  "model": "subscriptions.subscription",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 13,
+    "frequency": "Daily",
+    "start_date": "2026-03-03",
+    "end_date": "2026-04-03",
+    "is_active": true,
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "created_at": "2026-03-03T06:29:20.042Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 13,
+    "quantity": 1,
+    "total_price": "100.00",
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": true,
+    "created_at": "2026-03-03T06:49:12.111Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 13,
+    "quantity": 1,
+    "total_price": "100.00",
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": true,
+    "created_at": "2026-03-03T07:00:58.291Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 2,
+    "quantity": 1,
+    "total_price": "70.00",
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": true,
+    "created_at": "2026-03-03T07:00:58.318Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 10,
+    "quantity": 1,
+    "total_price": "80.00",
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": true,
+    "created_at": "2026-03-03T07:00:58.345Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 10,
+    "quantity": 1,
+    "total_price": "80.00",
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": true,
+    "created_at": "2026-03-03T07:18:29.117Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 13,
+    "quantity": 1,
+    "total_price": "100.00",
+    "payment_status": "Paid",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": true,
+    "created_at": "2026-03-03T07:23:45.853Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 13,
+    "quantity": 1,
+    "total_price": "100.00",
+    "payment_status": "Paid",
+    "payment_method": "UPI",
+    "payment_reference": "bjg",
+    "is_active": true,
+    "created_at": "2026-03-03T09:02:22.067Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 16,
+    "quantity": 1,
+    "total_price": "130.00",
+    "payment_status": "Paid",
+    "payment_method": "UPI",
+    "payment_reference": "1",
+    "is_active": true,
+    "created_at": "2026-03-08T07:48:42.441Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 2,
+    "quantity": 1,
+    "total_price": "70.00",
+    "payment_status": "Paid",
+    "payment_method": "UPI",
+    "payment_reference": "1",
+    "is_active": true,
+    "created_at": "2026-03-08T07:49:58.284Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 26,
+    "quantity": 1,
+    "total_price": "20.00",
+    "payment_status": "Paid",
+    "payment_method": "Card",
+    "payment_reference": "CARD-2356",
+    "is_active": true,
+    "created_at": "2026-03-08T17:34:46.239Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 11,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 27,
+    "quantity": 1,
+    "total_price": "15.00",
+    "payment_status": "Pending",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": false,
+    "created_at": "2026-03-08T17:34:46.276Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 12,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 24,
+    "quantity": 1,
+    "total_price": "25.00",
+    "payment_status": "Pending",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": false,
+    "created_at": "2026-03-08T17:34:46.311Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 13,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 8,
+    "quantity": 1,
+    "total_price": "40.00",
+    "payment_status": "Pending",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": false,
+    "created_at": "2026-03-08T17:34:46.354Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 14,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 11,
+    "quantity": 1,
+    "total_price": "250.00",
+    "payment_status": "Pending",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": false,
+    "created_at": "2026-03-08T17:34:46.392Z"
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 15,
+  "fields": {
+    "user": [
+      "sanika@gmail.com"
+    ],
+    "product": 9,
+    "quantity": 1,
+    "total_price": "95.00",
+    "payment_status": "Pending",
+    "payment_method": "",
+    "payment_reference": "",
+    "is_active": false,
+    "created_at": "2026-03-08T17:34:46.421Z"
+  }
+}
+]
